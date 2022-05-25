@@ -17,7 +17,7 @@ class Round:
         self.games.append(game)
 
     def __str__(self):
-        return f"{self.name}, {self.startDate}, {self.games}"
+        return f"{self.name}, {self.startDate}, {self.endDate}, {self.games}"
 
     def __repr__(self):
         """print"""

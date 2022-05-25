@@ -29,8 +29,9 @@ class Tournament:
         self.description = description
 
     def __str__(self):
-        return f"{self.name}, {self.date}, {self.players}, {self.rounds}"
+        return f"{self.name}, {self.location} {self.date}, {self.players}, {self.rounds}, {self.timer}"
 
     def __repr__(self):
         """print"""
         return str(self)
+
