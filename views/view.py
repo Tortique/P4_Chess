@@ -64,7 +64,12 @@ class View:
         firstname_player = input("Prénom : ")
         birthdate = input("Date de naissance : ")
         gender = input("Genre : ")
-        ranking = int(input("Rang : "))
+        while True:
+            try:
+                ranking = int(input("Rang : "))
+                break
+            except ValueError:
+                print("Veuillez entrer un nombre")
         player = Player(name_player, firstname_player, birthdate, gender, ranking)
         return player
 
@@ -116,3 +121,7 @@ class View:
     def not_found():
         print("Tournoi non trouvé")
         print("------------------")
+
+    @staticmethod
+    def more_than_one_tournament():
+        return input("Plus d'un tournoi correspond à ce nom, spécifiez une date :")

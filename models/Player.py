@@ -20,7 +20,7 @@ class Player:
         return self.score
 
     def __str__(self):
-        return f"{self.name} {self.firstname} {self.ranking} {self.score}"
+        return f"Nom : {self.name} {self.firstname}, Rang : {self.ranking}, Score : {self.score}"
 
     def __repr__(self):
         """print"""

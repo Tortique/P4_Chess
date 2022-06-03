@@ -1,4 +1,8 @@
 import os
+
+from tinydb import TinyDB, Query
+
+from controllers.Database import deserializer_tournament
 from controllers.MainController import MainController
 from controllers.TournamentController import TournamentController
 from views.view import View
@@ -17,14 +21,21 @@ class ReportsController:
 
     def get_report_by_alphabetical(self):
         clear()
+        db = TinyDB('db.json')
+        tournaments = db.table('tournaments')
+        TournamentDB = Query()
         tournamentName = self.view.get_tournament()
-        for element in self.tournamentController.tournamentList:
-            if element.name == tournamentName:
-                tournament = element
-                print(tournament.players)
-                print("Hello")
-                break
-            else:
-                clear()
-                self.view.not_found()
-                self.mainController.reports_menu()
+        count = tournaments.count(TournamentDB.name == str(tournamentName))
+        if count > 0:
+            if count == 1:
+                tournament = deserializer_tournament(tournaments.get(TournamentDB.name == str(tournamentName)))
+                tournament.show_players()
+            if count > 1:
+                date = self.view.more_than_one_tournament()
+                tournament = deserializer_tournament(tournaments.get((TournamentDB.name == str(tournamentName)) &
+                                                                     (TournamentDB.date == str(date))))
+                tournament.show_players()
+        else:
+            clear()
+            self.view.not_found()
+            self.mainController.reports_menu()

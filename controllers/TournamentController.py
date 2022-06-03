@@ -4,8 +4,9 @@ from models.Round import Round
 from models.Tournament import Tournament
 from views.view import View
 from controllers.MainController import MainController
-from controllers.ReportsController import ReportsController
-from tinydb import TinyDB, Query
+from tinydb import TinyDB, Query, where
+from controllers.Database import serializer_players, insert_players, serializer_tournament, insert_tournament, \
+    deserializer_tournament
 import os
 
 
@@ -17,23 +18,21 @@ class TournamentController:
 
     def __init__(self, reportController):
         self.view = View()
-        self.tournamentList = []
-        self.reportsController = ReportsController()
+        self.reportsController = reportController
         self.mainController = MainController(self.view, self, self.reportsController)
 
     def new_tournament(self):
-        db = TinyDB('db.json')
-        players = db.table('players')
-        Players = Query()
         name = self.view.name_of_tournament()
         location = self.view.location()
         timer = self.view.timer()
         tournament = Tournament(name, location, timer)
         while len(tournament.players) < 8:
             player = self.view.player(len(tournament.players) + 1)
-
-            tournament.players.append(player)
-        self.tournamentList.append(tournament)
+            serialized = serializer_players(player)
+            insert_players(serialized)
+            tournament.add_player(player)
+        serialized = serializer_tournament(tournament)
+        insert_tournament(serialized)
         start = ""
         while start != "Oui" and start != "Non":
             start = self.view.start_tournament()
@@ -51,20 +50,24 @@ class TournamentController:
         self.mainController.tournament_menu()
 
     def continue_tournament(self):
-        if not self.tournamentList:
-            self.view.empty_list()
-            self.mainController.tournament_menu()
+        name = self.view.get_tournament()
+        db = TinyDB('db.json')
+        tournaments = db.table('tournaments')
+        TournamentDB = Query()
+        count = tournaments.count(TournamentDB.name == str(name))
+        if count > 0:
+            if count == 1:
+                tournament = deserializer_tournament(tournaments.get(TournamentDB.name == str(name)))
+                print(tournament)
+            if count > 1:
+                date = self.view.more_than_one_tournament()
+                tournament = deserializer_tournament(tournaments.get((TournamentDB.name == str(name)) &
+                                                                     (TournamentDB.date == str(date))))
+                print(tournament)
         else:
-            name = self.view.get_tournament()
-            for element in self.tournamentList:
-                if element.name == name:
-                    tournament = element
-                    print(tournament)
-                    break
-                else:
-                    clear()
-                    self.view.not_found()
-                    self.mainController.tournament_menu()
+            clear()
+            self.view.not_found()
+            self.mainController.tournament_menu()
 
     def first_round(self, tournament):
         round = Round("Round 1")

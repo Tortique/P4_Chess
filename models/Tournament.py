@@ -28,8 +28,12 @@ class Tournament:
         """Ajoute une description"""
         self.description = description
 
+    def show_players(self):
+        for player in self.players:
+            print(player)
+
     def __str__(self):
-        return f"{self.name}, {self.location} {self.date}, {self.players}, {self.rounds}, {self.timer}"
+        return f"{self.name}, à {self.location}, le {self.date}, joueurs : {self.players}, rounds : {self.rounds}, Gestion de timer : {self.timer}"
 
     def __repr__(self):
         """print"""
