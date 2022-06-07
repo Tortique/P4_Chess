@@ -9,6 +9,12 @@ class Round:
         self.startDate = f"{now.date().strftime('%d/%m/%y')} {now.time().isoformat(timespec='minutes')}"
         self.endDate = ""
 
+    def change_start_date(self, date):
+        self.startDate = date
+
+    def change_end_date(self, date):
+        self.endDate = date
+
     def end_round(self):
         now = datetime.today()
         self.endDate = f"{now.date()} {now.time().isoformat(timespec='minutes')}"

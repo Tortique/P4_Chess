@@ -78,7 +78,12 @@ class View:
         return input("Commencer le tournoi ? (Oui/Non) : ")
 
     @staticmethod
-    def show_round1(players):
+    def continue_tournament():
+        return input("Continuer le tournoi ? (Oui/Non) : ")
+
+    @staticmethod
+    def show_round1(name, players):
+        print(name)
         print(players[0], "vs", players[4])
         print(players[1], "vs", players[5])
         print(players[2], "vs", players[6])
@@ -109,7 +114,7 @@ class View:
         return [score1, score2]
 
     @staticmethod
-    def get_tournament():
+    def get_tournament_name():
         return input("Quel est le nom du tournoi ? :")
 
     @staticmethod
@@ -123,5 +128,6 @@ class View:
         print("------------------")
 
     @staticmethod
-    def more_than_one_tournament():
-        return input("Plus d'un tournoi correspond à ce nom, spécifiez une date :")
+    def get_tournament_date():
+        return input("Date du tournoi (AAAA-MM-JJ) :")
+

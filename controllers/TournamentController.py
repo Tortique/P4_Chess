@@ -6,7 +6,7 @@ from views.view import View
 from controllers.MainController import MainController
 from tinydb import TinyDB, Query, where
 from controllers.Database import serializer_players, insert_players, serializer_tournament, insert_tournament, \
-    deserializer_tournament
+    deserializer_tournament, serializer_rounds, update_round, serializer_games, drop_tournaments
 import os
 
 
@@ -43,27 +43,34 @@ class TournamentController:
                 self.mainController.tournament_menu()
 
     def start_tournament(self, tournament):
-        self.first_round(tournament)
+        if len(tournament.rounds) == 0:
+            self.first_round(tournament)
+            self.ask_continue()
         while len(tournament.rounds) < 4:
             self.round(tournament)
+            self.ask_continue()
         clear()
         self.mainController.tournament_menu()
 
+    def ask_continue(self):
+        continue_tournament = ""
+        while continue_tournament != "Oui" and continue_tournament != "Non":
+            continue_tournament = self.view.continue_tournament()
+            if continue_tournament == "Non":
+                clear()
+                self.mainController.tournament_menu()
+
     def continue_tournament(self):
-        name = self.view.get_tournament()
+        name = self.view.get_tournament_name()
+        date = self.view.get_tournament_date()
         db = TinyDB('db.json')
         tournaments = db.table('tournaments')
         TournamentDB = Query()
         count = tournaments.count(TournamentDB.name == str(name))
         if count > 0:
-            if count == 1:
-                tournament = deserializer_tournament(tournaments.get(TournamentDB.name == str(name)))
-                print(tournament)
-            if count > 1:
-                date = self.view.more_than_one_tournament()
-                tournament = deserializer_tournament(tournaments.get((TournamentDB.name == str(name)) &
-                                                                     (TournamentDB.date == str(date))))
-                print(tournament)
+            tournament = deserializer_tournament(tournaments.get((TournamentDB.name == str(name)) &
+                                                                 (TournamentDB.date == str(date))))
+            self.start_tournament(tournament)
         else:
             clear()
             self.view.not_found()
@@ -72,7 +79,7 @@ class TournamentController:
     def first_round(self, tournament):
         round = Round("Round 1")
         players = self.sort_players_by_rank(tournament)
-        self.view.show_round1(players)
+        self.view.show_round1(round.name, players)
         superiorList = players[0:4]
         inferiorList = players[4:8]
         for player in range(len(superiorList)):
@@ -84,6 +91,7 @@ class TournamentController:
             del inferiorList[0]
         round.end_round()
         tournament.add_round(round)
+        update_round(tournament)
         self.view.finish_round(round)
 
     def round(self, tournament):
@@ -94,21 +102,27 @@ class TournamentController:
             players_temp.append(p)
         currentRound = []
         while len(players_temp) > 0:
-            i = 1
-            playable = True
+            players_already_played_temp = []
             for r in tournament.rounds:
                 for game in r.games:
                     if len(players_temp) == 0:
                         break
-                    if players_temp[0] == game.get_player1() or players_temp[0] == game.get_player2():
-                        if players_temp[i] == game.get_player1() or players_temp[i] == game.get_player2():
-                            i = i + 1
-                            playable = False
-            if playable:
-                currentRound.append(players_temp[0])
-                currentRound.append(players_temp[i])
-                del players_temp[0]
-                del players_temp[i - 1]
+                    if players_temp[0] == game.get_player1():
+                        players_already_played_temp.append(game.get_player2())
+                    if players_temp[0] == game.get_player2():
+                        players_already_played_temp.append(game.get_player1())
+            for player in players_temp:
+                if player == players_temp[0]:
+                    continue
+                if player in players_already_played_temp:
+                    continue
+                else:
+                    currentRound.append(players_temp[0])
+                    currentRound.append(player)
+                    del players_temp[0]
+                    players_temp.remove(player)
+                    players_already_played_temp.clear()
+                    break
         self.view.show_round(nameOfRound, currentRound)
         while len(currentRound) > 0:
             self.view.show_game(currentRound[0], currentRound[1])
@@ -119,6 +133,7 @@ class TournamentController:
             del currentRound[0]
         round.end_round()
         tournament.add_round(round)
+        update_round(tournament)
         self.view.finish_round(round)
 
     @staticmethod
@@ -141,3 +156,7 @@ class TournamentController:
             player.add_score(score)
         players.sort(key=Player.get_score, reverse=True)
         return players
+
+    def del_tournaments(self):
+        drop_tournaments()
+        self.mainController.tournament_menu()

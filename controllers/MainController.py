@@ -20,7 +20,8 @@ class MainController:
         self.tournamentMenu = {
             '1': self.tournamentController.new_tournament,
             '2': self.tournamentController.continue_tournament,
-            '3': self.main_menu
+            '3': self.tournamentController.del_tournaments,
+            '4': self.main_menu
         }
         self.playersMenu = {
             '1': "Test",
@@ -46,7 +47,7 @@ class MainController:
 
     def tournament_menu(self):
         choice = 0
-        while choice not in ['1', '2', '3']:
+        while choice not in ['1', '2', '3', '4']:
             choice = self.view.choice_tournament_menu()
             action = self.tournamentMenu.get(choice)
             if action:
