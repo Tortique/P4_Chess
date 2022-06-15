@@ -8,7 +8,7 @@ from models.Tournament import Tournament
 
 def serializer_players(player):
     serialized_player = {
-        'name': str(player.name),
+        'name': player.name,
         'firstname': player.firstname,
         'birthdate': player.birthdate,
         'gender': player.gender,
@@ -21,11 +21,14 @@ def serializer_players(player):
 def insert_players(serialized_player):
     db = TinyDB('db.json')
     players_table = db.table('players')
-    players_table.insert(serialized_player)
+    PlayerDB = Query()
+    players_table.upsert(serialized_player, (PlayerDB.name == str(serialized_player['name'])) &
+                         (PlayerDB.firstname == str(serialized_player['firstname'])) &
+                         (PlayerDB.birthdate == str(serialized_player['birthdate'])))
 
 
 def deserializer_players(player):
-    name = str(player['name'])
+    name = player['name']
     firstname = player['firstname']
     birthdate = ['birthdate']
     gender = player['gender']
@@ -76,7 +79,7 @@ def deserializer_games(game):
     score1 = game['score1']
     player2 = deserializer_players(game['player2'])
     score2 = game['score2']
-    game = Game(player1, score1, player2, score2)
+    game = Game(player1, player2,score1, score2)
     return game
 
 

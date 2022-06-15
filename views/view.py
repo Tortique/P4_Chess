@@ -20,7 +20,8 @@ class View:
         print("Choississez une option :")
         print("1 - Créer un tournoi")
         print("2 - Reprendre un tournoi")
-        print("3 - Retour")
+        print("3 - Vider BDD")
+        print("4 - Retour")
         print("-----------")
         return input("Choix : ")
 
@@ -28,7 +29,7 @@ class View:
     def choice_players_menu():
         print("-Menu Joueurs-")
         print("Choississez une option :")
-        print("1 - ")
+        print("1 - Modifier le rang d'un joueur")
         print("2 - Retour")
         print("-----------")
         return input("Choix : ")
@@ -37,8 +38,14 @@ class View:
     def choice_reports_menu():
         print("-Menu Rapports-")
         print("Choississez une option :")
-        print("1 - ")
-        print("2 - Retour")
+        print("1 - Liste des joueurs par ordre alphabétique")
+        print("2 - Liste des joueurs par ordre de rang")
+        print("3 - Liste des joueurs d'un tournoi par ordre alphabétique")
+        print("4 - Liste des joueurs d'un tournoi par ordre de rang")
+        print("5 - Liste des tournois")
+        print("6 - Liste des rounds d'un tournoi")
+        print("7 - Liste des matchs d'un tournoi")
+        print("8 - Retour")
         print("-----------")
         return input("Choix : ")
 
@@ -128,6 +135,26 @@ class View:
         print("------------------")
 
     @staticmethod
+    def player_not_found():
+        print("Joueur non trouvé")
+        print("------------------")
+
+    @staticmethod
     def get_tournament_date():
         return input("Date du tournoi (AAAA-MM-JJ) :")
 
+    @staticmethod
+    def get_player_name():
+        return input("Nom du joueur : ")
+
+    @staticmethod
+    def get_player_firstname():
+        return input("Prénom du joueur : ")
+
+    @staticmethod
+    def get_player_birthdate():
+        return input("Date de naissance du joueur : ")
+
+    @staticmethod
+    def get_rank():
+        return input("Quel rang voulez-vous lui attribuer ? : ")

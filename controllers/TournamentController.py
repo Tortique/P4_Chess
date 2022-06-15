@@ -1,12 +1,13 @@
+from controllers.PlayerController import PlayerController
 from models.Game import Game
 from models.Player import Player
 from models.Round import Round
 from models.Tournament import Tournament
 from views.view import View
 from controllers.MainController import MainController
-from tinydb import TinyDB, Query, where
+from tinydb import TinyDB, Query
 from controllers.Database import serializer_players, insert_players, serializer_tournament, insert_tournament, \
-    deserializer_tournament, serializer_rounds, update_round, serializer_games, drop_tournaments
+    deserializer_tournament, update_round, drop_tournaments
 import os
 
 
@@ -19,7 +20,8 @@ class TournamentController:
     def __init__(self, reportController):
         self.view = View()
         self.reportsController = reportController
-        self.mainController = MainController(self.view, self, self.reportsController)
+        self.playerController = PlayerController(reportController, self)
+        self.mainController = MainController(self.view, self, self.reportsController, self.playerController)
 
     def new_tournament(self):
         name = self.view.name_of_tournament()
@@ -47,7 +49,7 @@ class TournamentController:
             self.first_round(tournament)
             self.ask_continue()
         while len(tournament.rounds) < 4:
-            self.round(tournament)
+            self.play_round(tournament)
             self.ask_continue()
         clear()
         self.mainController.tournament_menu()
@@ -94,7 +96,7 @@ class TournamentController:
         update_round(tournament)
         self.view.finish_round(round)
 
-    def round(self, tournament):
+    def play_round(self, tournament):
         players_temp = []
         nameOfRound = "Round " + str(len(tournament.rounds) + 1)
         round = Round(nameOfRound)

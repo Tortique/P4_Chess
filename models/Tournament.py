@@ -32,8 +32,18 @@ class Tournament:
         for player in self.players:
             print(player)
 
+    def show_rounds(self):
+        for round in self.rounds:
+            print(round)
+
+    def show_games(self):
+        for round in self.rounds:
+            for game in round.games:
+                print(game)
+
     def __str__(self):
-        return f"{self.name}, à {self.location}, le {self.date}, joueurs : {self.players}, rounds : {self.rounds}, Gestion de timer : {self.timer}"
+        return f"{self.name}, à {self.location}, le {self.date}, joueurs : {self.players}, rounds : {self.rounds}, " \
+               f"Gestion de timer : {self.timer} "
 
     def __repr__(self):
         """print"""

@@ -7,6 +7,9 @@ class Player:
         self.ranking = ranking
         self.score = 0
 
+    def get_name(self):
+        return self.name
+
     def add_ranking(self, rank):
         self.ranking = rank
 
@@ -19,8 +22,14 @@ class Player:
     def get_score(self):
         return self.score
 
+    def get_player_infos(self):
+        return print(f"Nom : {self.name} {self.firstname}, Rang : {self.ranking}")
+
+    def get_player_in_tournament(self):
+        return print(f"Nom : {self.name} {self.firstname}, Rang : {self.ranking}, Score : {self.score}")
+
     def __str__(self):
-        return f"Nom : {self.name} {self.firstname}, Rang : {self.ranking}, Score : {self.score}"
+        return f"{self.name} {self.firstname}"
 
     def __repr__(self):
         """print"""

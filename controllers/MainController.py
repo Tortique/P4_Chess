@@ -7,10 +7,11 @@ def clear():
 
 class MainController:
 
-    def __init__(self, view, tournamentController, reportsController):
+    def __init__(self, view, tournamentController, reportsController, playerController):
         self.view = view
         self.tournamentController = tournamentController
         self.reportsController = reportsController
+        self.playerController = playerController
         self.mainMenu = {
             '1': self.tournament_menu,
             '2': self.players_menu,
@@ -24,12 +25,18 @@ class MainController:
             '4': self.main_menu
         }
         self.playersMenu = {
-            '1': "Test",
+            '1': self.playerController.change_player_ranking,
             '2': self.main_menu
         }
         self.reportsMenu = {
-            '1': self.reportsController.get_report_by_alphabetical,
-            '2': self.main_menu
+            '1': self.reportsController.get_all_players_by_alphabetical,
+            '2': self.reportsController.get_all_players_by_rank,
+            '3': self.reportsController.get_report_tournament_players_by_alphabetical,
+            '4': self.reportsController.get_report_tournament_players_by_rank,
+            '5': self.reportsController.get_all_tournaments,
+            '6': self.reportsController.get_all_rounds_of_tournament,
+            '7': self.reportsController.get_all_games_of_tournament,
+            '8': self.main_menu
         }
 
     def main_menu(self):
@@ -73,7 +80,7 @@ class MainController:
 
     def reports_menu(self):
         choice = 0
-        while choice not in ['1', '2']:
+        while choice not in ['1', '2', '3', '4', '5', '6', '7', '8']:
             choice = self.view.choice_reports_menu()
             action = self.reportsMenu.get(choice)
             if action:

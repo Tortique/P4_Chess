@@ -16,7 +16,7 @@ class Game:
         return self.game[1][1]
 
     def __str__(self):
-        return f"{self.game}"
+        return f"{self.game[0][0]}, {self.game[0][1]} vs {self.game[1][0]}, {self.game[1][1]}"
 
     def __repr__(self):
         """print"""
