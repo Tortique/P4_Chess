@@ -67,10 +67,38 @@ class View:
     @staticmethod
     def player(number):
         print("Ajouter Joueur ", number, ":")
-        name_player = input("Nom : ")
-        firstname_player = input("Prénom : ")
-        birthdate = input("Date de naissance : ")
-        gender = input("Genre : ")
+        while True:
+            try:
+                name_player = input("Nom : ")
+                if not name_player:
+                    raise ValueError("Veuillez entrer un nom")
+                break
+            except ValueError as e:
+                print(e)
+        while True:
+            try:
+                firstname_player = input("Prénom : ")
+                if not firstname_player:
+                    raise ValueError("Veuillez entrer un prénom")
+                break
+            except ValueError as e:
+                print(e)
+        while True:
+            try:
+                birthdate = input("Date de naissance : ")
+                if not birthdate:
+                    raise ValueError("Veuillez entrer une date de naissance")
+                break
+            except ValueError as e:
+                print(e)
+        while True:
+            try:
+                gender = input("Genre : ")
+                if not gender:
+                    raise ValueError("Veuillez entrer un genre")
+                break
+            except ValueError as e:
+                print(e)
         while True:
             try:
                 ranking = int(input("Rang : "))
@@ -115,9 +143,19 @@ class View:
     @staticmethod
     def get_score(player1, player2):
         print("Score de ", player1, ": ")
-        score1 = int(input())
+        while True:
+            try:
+                score1 = int(input())
+                break
+            except ValueError:
+                print("Veuillez entrer un nombre")
         print("Score de ", player2, ": ")
-        score2 = int(input())
+        while True:
+            try:
+                score2 = int(input())
+                break
+            except ValueError:
+                print("Veuillez entrer un nombre")
         return [score1, score2]
 
     @staticmethod
