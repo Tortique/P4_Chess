@@ -16,7 +16,7 @@ class Player:
     def get_ranking(self):
         return self.ranking
 
-    def add_score(self,score):
+    def add_score(self, score):
         self.score = score
 
     def get_score(self):

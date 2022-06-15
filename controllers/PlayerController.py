@@ -35,8 +35,8 @@ class PlayerController:
                                 (PlayerDB.firstname == str(playerFirstname)) &
                                 (PlayerDB.birthdate == str(playerBirthdate)))
             player = deserializer_players(self.players.get((PlayerDB.name == str(playerName)) &
-                                      (PlayerDB.firstname == str(playerFirstname)) &
-                                      (PlayerDB.birthdate == str(playerBirthdate))))
+                                                           (PlayerDB.firstname == str(playerFirstname)) &
+                                                           (PlayerDB.birthdate == str(playerBirthdate))))
             player.get_player_infos()
         else:
             clear()

@@ -79,7 +79,7 @@ def deserializer_games(game):
     score1 = game['score1']
     player2 = deserializer_players(game['player2'])
     score2 = game['score2']
-    game = Game(player1, player2,score1, score2)
+    game = Game(player1, player2, score1, score2)
     return game
 
 

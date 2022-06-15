@@ -48,4 +48,3 @@ class Tournament:
     def __repr__(self):
         """print"""
         return str(self)
-
