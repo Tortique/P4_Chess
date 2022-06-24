@@ -6,7 +6,7 @@ class View:
     @staticmethod
     def choice_main_menu():
         print("-Menu Principal-")
-        print("Choississez une option :")
+        print("Choisissez une option :")
         print("1 - Tournoi")
         print("2 - Joueurs")
         print("3 - Rapports")
@@ -28,7 +28,7 @@ class View:
     @staticmethod
     def choice_players_menu():
         print("-Menu Joueurs-")
-        print("Choississez une option :")
+        print("Choisissez une option :")
         print("1 - Modifier le rang d'un joueur")
         print("2 - Retour")
         print("-----------")
@@ -37,7 +37,7 @@ class View:
     @staticmethod
     def choice_reports_menu():
         print("-Menu Rapports-")
-        print("Choississez une option :")
+        print("Choisissez une option :")
         print("1 - Liste des joueurs par ordre alphabétique")
         print("2 - Liste des joueurs par ordre de rang")
         print("3 - Liste des joueurs d'un tournoi par ordre alphabétique")
